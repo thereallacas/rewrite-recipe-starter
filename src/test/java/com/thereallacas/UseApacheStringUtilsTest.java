@@ -26,7 +26,7 @@ import static org.openrewrite.java.Assertions.java;
 class UseApacheStringUtilsTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources("com.yourorg.UseApacheStringUtils")
+        spec.recipeFromResources("com.thereallacas.UseApacheStringUtils")
           // Notice how we only pass in `spring-core` as the classpath, but not `commons-lang3`.
           // That's because we only need dependencies to compile the before code blocks, not the after code blocks.
           .parser(JavaParser.fromJavaVersion().classpath("spring-core"));
