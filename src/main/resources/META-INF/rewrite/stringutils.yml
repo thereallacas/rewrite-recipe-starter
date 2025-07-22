@@ -27,5 +27,8 @@ recipeList:
       onlyIfUsing: org.springframework.util.StringUtils
       configuration: implementation
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: org.springframework.util.StringUtils
-      newFullyQualifiedTypeName: org.apache.commons.lang3.StringUtils
+       oldFullyQualifiedTypeName: org.springframework.util.StringUtils
+       newFullyQualifiedTypeName: org.apache.commons.lang3.StringUtils
+  - org.openrewrite.java.ChangeMethodName:
+       methodPattern: org.apache.commons.lang3.StringUtils trimWhitespace(java.lang.String)
+       newMethodName: strip

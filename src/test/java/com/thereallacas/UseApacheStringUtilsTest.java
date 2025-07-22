@@ -80,4 +80,31 @@ class UseApacheStringUtilsTest implements RewriteTest {
           )
         );
     }
+
+    @Test
+    void trimWhitespace() {
+        rewriteRun(
+          //language=java
+          java(
+            """
+              import org.springframework.util.StringUtils;
+              
+              class A {
+                  boolean test(String s) {
+                      return StringUtils.trimWhitespace(s);
+                  }
+              }
+              """,
+            """
+              import org.apache.commons.lang3.StringUtils;
+              
+              class A {
+                  boolean test(String s) {
+                      return StringUtils.strip(s);
+                  }
+              }
+              """
+          )
+        );
+    }
 }
