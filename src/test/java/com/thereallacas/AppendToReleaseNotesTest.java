@@ -13,57 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yourorg;
+package com.thereallacas;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.DocumentExample;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-import static org.openrewrite.java.Assertions.java;
+import java.nio.file.Path;
 
-@Disabled("Remove this annotation to run the tests once you implement the recipe")
-class UseIntegerValueOfTest implements RewriteTest {
+import static org.openrewrite.test.SourceSpecs.text;
 
+class AppendToReleaseNotesTest implements RewriteTest {
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipe(new UseIntegerValueOf());
+        spec.recipe(new AppendToReleaseNotes("Hello world"));
     }
 
     @DocumentExample
     @Test
-    void replacesNewIntegerWithValueOf() {
+    void editExistingReleaseNotes() {
+        // When the file does already exist, we assert the content is modified as expected.
         rewriteRun(
-          java(
+          text(
             """
-            class Test {
-                Integer i = new Integer(42);
-            }
-            """,
+              You say goodbye, I say
+              """,
             """
-            class Test {
-                Integer i = Integer.valueOf(42);
-            }
-            """
+              You say goodbye, I say
+              Hello world
+              """,
+            spec -> spec.path(Path.of("RELEASE.md")
+            )
           )
         );
     }
 
     @Test
-    void replacesNewIntegerWithParseInt() {
+    void createNewReleaseNotes() {
+        // Notice how the before text is null, indicating that the file does not exist yet.
+        // The after text is the content of the file after the recipe is applied.
         rewriteRun(
-          java(
+          text(
+            null,
             """
-            class Test {
-                Integer i = new Integer("42");
-            }
-            """,
-            """
-            class Test {
-                Integer i = Integer.parseInt("42");
-            }
-            """
+              Hello world
+              """,
+            spec -> spec.path(Path.of("RELEASE.md")
+            )
           )
         );
     }
